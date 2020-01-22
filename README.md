@@ -2,7 +2,7 @@
 
 _Slack applications made simple !_
 
-Aido is a javascript framework to write Slack applications in a clean and simple way. Its intent is to take away the specificities of the Slack API, and make Slack bots code more like regular old web applications.
+Aido is a javascript framework to write Slack applications in a clean and simple way. Its intent is to take away the specificities of the Slack API, and make Slack applications code more like regular old web applications.
 
 You can think of Aido as being a basic Single Page App framework, where your app renders as Slack messages instead of a page in a browser :
 
@@ -23,7 +23,7 @@ Let's create a very simple Slack application : it will display a number, which w
 
 First we describe our view using the Pug templating language
 ```pug
-# views/app.pug
+# views/simple.pug
 body
   section
     p #{state.number}
@@ -97,19 +97,21 @@ class Simple extends Slash {
 }
 ```
 
-Now let's take a peek at the aido lifecycle for a **slash command** (in blue), and an **action** (in red) :
+Below is a schema of the aido lifecycle for a **slash command** (in blue), and an **action** (in red) :
 
 ![Aido lifecycle](docs/assets/aido-lifecycle.png)
 
 ## Setting up your Slack application
 
-As it stands, your aido application can't interact with Slack because it is lacking the necessary Oauth tokens. Not to worry ! The auto-configurator will help you get everything setup. There is currently no API to configure Slack applications programmatically, but the configurator acts as a mini-tutorial which will guide you through the Slack interfaces.
+Before your application can communicate with Slack, you will have to setup the necessary oauth tokens and authorizations, both on https://api.slack.com/apps and in your Aido configuration. The Aido configuration is the object you provide to the function `aido.init()`. For its full specifications, please refer to the [API reference](docs/API.md).
 
-To start the auto-configurator, you just need to run your application in dev mode : `node index.js dev`. If you clone the aido repository, you can check out the various examples by typing `npm run simple`, `npm run todo`, or `npm run polls`. They will automatically start in dev mode.
+If you are not sure how to proceed, you can start your application in dev mode (`node index.js dev`) and Aido will provide you with step by step instructions on how to get each token and scope just right.
 
-Because Slack communicates with your aido application through HTTPS webhooks, you will also need to setup a tunnel to a local port. Aido will attempt to setup a free tunnel with [`localtunnel`](https://localtunnel.github.io/www/). One of the advantages of localtunnel is that you can request a named tunnel (such as `https://my-aido-app.localtunnel.me`) instead of a random one (such as `https://gqgh.localtunnel.me`).
+## Setting up a local tunnel
 
-A great alternative to localtunnel is [`ngrok`](https://ngrok.com/), although you will need a paid account if you want to have named tunnels.
+Because Slack communicates with your aido application through HTTPS webhooks, you will also need to setup a tunnel to a local port. Common services for these purposes include [`localtunnel`](https://localtunnel.github.io/www/) and [`ngrok`](https://ngrok.com/).
+
+You can either configure Aido with an existing tunnel URL, or let it create a free named tunnel on `localtunnel`. Please refer to the [API reference](docs/API.md) for more details.
 
 ## API
 
